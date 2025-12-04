@@ -292,79 +292,69 @@
           opacity: 0.9;
       }
       
-        .hero-book {
-          position: relative;
-          width: min(100%, 290px);
-          aspect-ratio: 3 / 4.4;
-          border-radius: 8px;
+      .hero-book {
+        position: relative;
+        width: min(100%, 290px);
+        aspect-ratio: 3 / 4.4;
 
-          /* Okładka */
-          background-image: url("/ebook-cover.jpg");
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
+        /* okładka */
+        background-image: url("ebook-cover.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
 
-          /* Efekt książki – lekkie 3D, ale nie „płaska grafika” */
-          box-shadow: 0 22px 45px rgba(0, 0, 0, 0.9);
-          transform-origin: center right;
-          transform: perspective(900px) rotateY(-18deg) rotateX(4deg) translateX(4px);
-          border: 1px solid rgba(245, 210, 122, 0.5);
-          overflow: visible; /* ważne dla pseudo-elementów */
-        }
+        /* delikatne 3D – jak wisząca książka, nie przegięta kartka */
+        transform-origin: center center;
+        transform: perspective(1200px) rotateY(-12deg) rotateX(4deg) rotateZ(-1deg);
+        box-shadow:
+          0 22px 40px rgba(0, 0, 0, 0.85),
+          0 0 0 1px rgba(245, 210, 122, 0.4);
+        overflow: visible;
+      }
 
-        /* Połysk na okładce */
-        .hero-book::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background:
-            linear-gradient(
-              120deg,
-              rgba(255, 255, 255, 0.16) 0%,
-              rgba(255, 255, 255, 0.05) 24%,
-              transparent 45%,
-              transparent 100%
-            );
-          mix-blend-mode: screen;
-          pointer-events: none;
-          border-radius: 8px;
-        }
-
-        /* BLOK KARTKOWY – „grubość” książki po prawej stronie */
-        .hero-book::after {
-          content: "";
-          position: absolute;
-          top: 4%;
-          bottom: 6%;
-          right: -12px;                 /* jak bardzo „wystaje” blok kartek */
-          width: 16px;                  /* grubość książki */
-          border-radius: 0 6px 6px 0;
-
-          /* efekt wielu cienkich kartek */
-          background:
-            repeating-linear-gradient(
-              to bottom,
-              #fdfdfb 0,
-              #fdfdfb 2px,
-              #eceae5 2px,
-              #eceae5 4px
-            );
-
-          box-shadow:
-            inset 2px 0 3px rgba(0, 0, 0, 0.15),
-            4px 0 10px rgba(0, 0, 0, 0.65);
-
-          transform: skewY(-2deg);      /* lekkie dopasowanie do perspektywy */
-        }
-      
+      /* lekki połysk po lewej stronie okładki */
       .hero-book::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background:
-          linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent 30%, rgba(0, 0, 0, 0.9) 100%),
-          radial-gradient(circle at 50% -10%, rgba(0, 139, 143, 0.65), transparent 60%);
-          pointer-events: none;
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background:
+          linear-gradient(
+            115deg,
+            rgba(255, 255, 255, 0.18) 0%,
+            rgba(255, 255, 255, 0.10) 14%,
+            transparent 38%,
+            transparent 100%
+          );
+        mix-blend-mode: screen;
+        pointer-events: none;
+      }
+
+      /* BLOK KARTKOWY – cienka, realistyczna krawędź po prawej */
+      .hero-book::after {
+        content: "";
+        position: absolute;
+        top: 0%;
+        bottom: 0%;
+        right: -8px;
+        width: 8px;
+        border-radius: 0 9px 9px 0;
+
+        /* faktura kartek */
+        background:
+          linear-gradient(to right, #f7f5ef 0%, #ece4d7 45%, #d7ccbb 100%),
+          repeating-linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.12) 0,
+            rgba(0, 0, 0, 0.12) 1px,
+            transparent 1px,
+            transparent 3px
+          );
+        background-blend-mode: multiply;
+
+        box-shadow:
+          inset 2px 0 3px rgba(0, 0, 0, 0.25),
+          3px 0 8px rgba(0, 0, 0, 0.6);
       }
       
       .hero-book__title {
@@ -720,8 +710,10 @@
           }
           
           .hero-book {
-              transform: perspective(820px) rotateY(-14deg) rotateX(3deg);
-              box-shadow: 0 18px 35px rgba(0, 0, 0, 0.9);
+              transform: perspective(1100px) rotateY(-10deg) rotateX(3deg) rotateZ(-1deg);
+              box-shadow:
+                0 18px 32px rgba(0, 0, 0, 0.85),
+                0 0 0 1px rgba(245, 210, 122, 0.35);
           }
           
           .hero-copy-eyebrow {
@@ -973,3 +965,4 @@
 </script>
 </body>
 </html>
+
