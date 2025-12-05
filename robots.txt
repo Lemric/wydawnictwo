@@ -1,8 +1,5 @@
 User-agent: *
 
-User-agent: Slurp
-Disallow: /
-
 User-agent: Yahoo!
 Disallow: /
 
