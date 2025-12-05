@@ -1,968 +1,1068 @@
 <!DOCTYPE html>
 <html lang="pl">
-<head>
-  <meta charset="UTF-8" />
-  <title>Detektywi z Wi-Fi: Tajemnice cyfrowego świata - Dominik Labudzinski</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="title" content="Detektywi z Wi-Fi: Tajemnice cyfrowego świata - Dominik Labudzinski"/>
-  <meta name="description" content="Detektywi z Wi-Fi: Tajemnice cyfrowego świata
-    W starym garażu na Zielonych Wzgórzach, gdzie monitory rzucają blade światło na
-    ściany, czwórka młodych..."/>
-  <meta property="og:title" content="Detektywi z Wi-Fi: Tajemnice cyfrowego świata | Dominik Labudzinski"/>
-  <meta property="og:type" content="books.book"/>
-  <meta property="og:description" content="Detektywi z Wi-Fi: Tajemnice cyfrowego świata
-  W starym garażu na Zielonych Wzg&oacute;rzach, gdzie monitory rzucają blade światło na
-  ściany, czw&oacute;rka młodych detektyw&oacute;w odkrywa coś niepokojącego. W..."/>
-  <meta property="books:author" content="Dominik Labudzinski"/>
-  <!-- Prosta paleta inspirowana okładką -->
-  <style>
-      :root {
-          --bg-deep: #030b14;
-          --bg-deep-2: #050f1c;
-          --bg-overlay: rgba(0, 0, 0, 0.45);
-          --accent-gold: #f5d27a;
-          --accent-gold-soft: #e7c36c;
-          --accent-teal: #008b8f;
-          --text-main: #f4f4f4;
-          --text-muted: #9ba8c0;
-          --border-soft: rgba(245, 210, 122, 0.25);
-          --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.8);
-          --radius-xl: 22px;
-          --transition-fast: 180ms ease-out;
-          --transition-med: 260ms ease-out;
-          --max-width: 1100px;
-      }
-      
-      * {
-          box-sizing: border-box;
-      }
-      
-      html, body {
-          margin: 0;
-          padding: 0;
-          background: radial-gradient(circle at 15% 10%, #273247 0, var(--bg-deep-2) 38%, var(--bg-deep) 80%);
-          color: var(--text-main);
-          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-          scroll-behavior: smooth;
-      }
-      
-      body {
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-      }
-      
-      a {
-          color: inherit;
-          text-decoration: none;
-      }
-      
-      img {
-          max-width: 100%;
-          display: block;
-      }
-      
-      .page {
-          position: relative;
-          isolation: isolate;
-          overflow-x: hidden;
-      }
-      
-      /* --- Subtelne „gwiazdy” w tle --- */
-      .star-layer {
-          position: fixed;
-          inset: 0;
-          pointer-events: none;
-          z-index: -2;
-          background-image:
-          radial-gradient(1px 1px at 20% 20%, rgba(255, 255, 255, 0.7), transparent 55%),
-          radial-gradient(1px 1px at 80% 30%, rgba(255, 255, 255, 0.6), transparent 55%),
-          radial-gradient(2px 2px at 40% 70%, rgba(255, 255, 255, 0.45), transparent 55%),
-          radial-gradient(1px 1px at 60% 10%, rgba(255, 255, 255, 0.4), transparent 55%);
-          opacity: 0.45;
-      }
-      
-      .gradient-overlay {
-          position: fixed;
-          inset: 0;
-          pointer-events: none;
-          z-index: -1;
-          background:
-          radial-gradient(circle at 55% -10%, rgba(0, 139, 143, 0.45), transparent 55%),
-          linear-gradient(to top, rgba(0, 0, 0, 0.8) 0, transparent 40%);
-          mix-blend-mode: screen;
-          opacity: 0.7;
-      }
-      
-      /* --- Layout główny --- */
-      
-      .shell {
-          width: 100%;
-          max-width: var(--max-width);
-          margin: 0 auto;
-          padding: 1.4rem 1.4rem 3rem;
-      }
-      
-      header.site-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1.1rem 1rem;
-          position: sticky;
-          top: 0;
-          z-index: 50;
-          backdrop-filter: blur(14px);
-          background: rgba(3, 9, 20, 0.96)
-      }
-      
-      .brand {
-          font-size: 0.9rem;
-          letter-spacing: 0.28em;
-          text-transform: uppercase;
-          color: var(--accent-gold-soft);
-          font-weight: 600;
-          display: flex;
-          align-items: center;
-          gap: 0.55rem;
-      }
-      
-      .brand-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 999px;
-          background: var(--accent-teal);
-          box-shadow: 0 0 10px rgba(0, 139, 143, 0.9);
-      }
-      
-      nav.site-nav {
-          display: flex;
-          gap: 1.3rem;
-          font-size: 0.9rem;
-          color: var(--text-muted);
-      }
-      
-      nav.site-nav a {
-          position: relative;
-          padding-bottom: 0.1rem;
-      }
-      
-      nav.site-nav a::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: -0.15rem;
-          width: 0;
-          height: 2px;
-          background: linear-gradient(90deg, var(--accent-gold), var(--accent-teal));
-          border-radius: 999px;
-          transition: width var(--transition-med);
-      }
-      
-      nav.site-nav a:hover::after,
-      nav.site-nav a:focus-visible::after {
-          width: 100%;
-      }
-      
-      .hero {
-          margin-top: 1rem;
-          display: grid;
-          grid-template-columns: minmax(0, 3fr) minmax(0, 2.6fr);
-          gap: 2.4rem;
-          align-items: center;
-      }
-      
-      .hero-copy-eyebrow {
-          font-size: 0.9rem;
-          color: var(--accent-teal);
-          letter-spacing: 0.22em;
-          text-transform: uppercase;
-          margin-bottom: 0.7rem;
-      }
-      
-      .hero-title {
-          font-family: "Times New Roman", "Georgia", "Garamond", serif;
-          font-weight: 700;
-          font-size: clamp(2.2rem, 3vw + 1.3rem, 3.3rem);
-          letter-spacing: 0.08em;
-          line-height: 1.15;
-          text-transform: uppercase;
-          color: var(--accent-gold);
-          text-shadow:
-          0 0 12px rgba(0, 0, 0, 0.9),
-          0 0 40px rgba(0, 0, 0, 0.9);
-          margin-bottom: 0.6rem;
-      }
-      
-      .hero-subtitle {
-          font-size: 1.05rem;
-          color: var(--text-main);
-          margin-bottom: 0.4rem;
-      }
-      
-      .hero-tagline {
-          font-size: 0.95rem;
-          color: var(--text-muted);
-          max-width: 33rem;
-          margin-bottom: 1.4rem;
-      }
-      
-      .hero-cta-row {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.9rem;
-          margin-bottom: 1.6rem;
-      }
-      
-      .btn {
-          border-radius: 999px;
-          padding: 0.78rem 1.6rem;
-          font-size: 0.95rem;
-          border: 1px solid transparent;
-          cursor: pointer;
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          transition: background var(--transition-med),
-          color var(--transition-med),
-          transform var(--transition-fast),
-          box-shadow var(--transition-med),
-          border-color var(--transition-med),
-          opacity var(--transition-fast);
-          text-transform: uppercase;
-          letter-spacing: 0.12em;
-          font-weight: 600;
-          text-decoration: none;
-          white-space: nowrap;
-      }
-      
-      .btn-primary {
-          background: radial-gradient(circle at 20% 0%, #ffe9a8 0, #f5d27a 35%, #b5944a 100%);
-          color: #1b1500;
-          box-shadow:
-          0 0 0 1px rgba(181, 148, 74, 0.5),
-          0 18px 35px rgba(0, 0, 0, 0.9);
-      }
-      
-      .btn-primary:hover {
-          transform: translateY(-1px);
-          box-shadow:
-          0 0 0 1px rgba(245, 210, 122, 0.85),
-          0 16px 40px rgba(0, 0, 0, 0.95);
-      }
-      
-      .btn-outline {
-          background: transparent;
-          border-color: rgba(245, 210, 122, 0.4);
-          color: var(--accent-gold);
-          box-shadow: 0 18px 38px rgba(0, 0, 0, 0.75);
-      }
-      
-      .btn-outline:hover {
-          background: rgba(3, 13, 25, 0.95);
-          border-color: rgba(245, 210, 122, 0.75);
-      }
-      
-      .hero-meta {
-          font-size: 0.85rem;
-          color: var(--text-muted);
-      }
-      
-      .hero-meta strong {
-          color: var(--accent-gold-soft);
-      }
-      
-      .hero-cover-wrap {
-          position: relative;
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-      }
-      
-      .hero-moon {
-          position: absolute;
-          top: -40px;
-          right: 12%;
-          width: 80px;
-          height: 80px;
-          border-radius: 50%;
-          background: radial-gradient(circle at 30% 30%, #fefce2 0, #dee9c6 35%, #93c0b8 60%, #142129 100%);
-          box-shadow:
-          0 0 18px rgba(222, 233, 198, 0.95),
-          0 0 70px rgba(0, 139, 143, 0.65);
-          opacity: 0.9;
-      }
-      
-      .hero-book {
-        position: relative;
-        width: min(100%, 290px);
-        aspect-ratio: 3 / 4.4;
-
-        /* okładka */
-        background-image: url("ebook-cover.jpg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-
-        /* delikatne 3D – jak wisząca książka, nie przegięta kartka */
-        transform-origin: center center;
-        transform: perspective(1200px) rotateY(-12deg) rotateX(4deg) rotateZ(-1deg);
-        box-shadow:
-          0 22px 40px rgba(0, 0, 0, 0.85),
-          0 0 0 1px rgba(245, 210, 122, 0.4);
-        overflow: visible;
-      }
-
-      /* lekki połysk po lewej stronie okładki */
-      .hero-book::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background:
-          linear-gradient(
-            115deg,
-            rgba(255, 255, 255, 0.18) 0%,
-            rgba(255, 255, 255, 0.10) 14%,
-            transparent 38%,
-            transparent 100%
-          );
-        mix-blend-mode: screen;
-        pointer-events: none;
-      }
-
-      /* BLOK KARTKOWY – cienka, realistyczna krawędź po prawej */
-      .hero-book::after {
-        content: "";
-        position: absolute;
-        top: 0%;
-        bottom: 0%;
-        right: -8px;
-        width: 8px;
-        border-radius: 0 9px 9px 0;
-
-        /* faktura kartek */
-        background:
-          linear-gradient(to right, #f7f5ef 0%, #ece4d7 45%, #d7ccbb 100%),
-          repeating-linear-gradient(
-            to bottom,
-            rgba(0, 0, 0, 0.12) 0,
-            rgba(0, 0, 0, 0.12) 1px,
-            transparent 1px,
-            transparent 3px
-          );
-        background-blend-mode: multiply;
-
-        box-shadow:
-          inset 2px 0 3px rgba(0, 0, 0, 0.25),
-          3px 0 8px rgba(0, 0, 0, 0.6);
-      }
-      
-      .hero-book__title {
-          position: absolute;
-          inset: 16% 8% auto 12%;
-          font-family: "Times New Roman", "Georgia", serif;
-          text-transform: uppercase;
-          color: var(--accent-gold);
-          letter-spacing: 0.09em;
-          line-height: 1.2;
-          font-size: 1.4rem;
-          text-shadow:
-          0 0 16px rgba(0, 0, 0, 0.9),
-          0 0 40px rgba(0, 0, 0, 1);
-      }
-      
-      .hero-book__series {
-          position: absolute;
-          bottom: 12%;
-          left: 12%;
-          font-size: 0.75rem;
-          letter-spacing: 0.15em;
-          text-transform: uppercase;
-          color: #f5d27a;
-      }
-      
-      .hero-book__author {
-          position: absolute;
-          top: 8%;
-          left: 12%;
-          font-size: 0.7rem;
-          letter-spacing: 0.22em;
-          text-transform: uppercase;
-          color: #f3e6c6;
-      }
-      
-      .hero-book__reflection {
-          position: absolute;
-          inset: 64% -12% -20% 40%;
-          background: radial-gradient(circle at 50% 0%, rgba(88, 156, 171, 0.6), transparent 70%);
-          opacity: 0.75;
-          mix-blend-mode: screen;
-      }
-      
-      .hero-book__spine {
-          content: "";
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: -12px;
-          width: 14px;
-          background: linear-gradient(90deg, #050812 0, #121827 40%, #050812 100%);
-          box-shadow: inset -2px 0 2px rgba(0, 0, 0, 0.9);
-      }
-      
-      .hero-book__spine-label {
-          position: absolute;
-          top: 50%;
-          left: -9px;
-          writing-mode: vertical-rl;
-          transform: translateY(-50%);
-          font-size: 0.6rem;
-          letter-spacing: 0.16em;
-          color: #f1d58a;
-          text-transform: uppercase;
-      }
-      
-      .hero-book__waterline {
-          position: absolute;
-          bottom: 24%;
-          left: 55%;
-          width: 120%;
-          height: 40%;
-          background:
-          radial-gradient(circle at 0% 0%, rgba(110, 173, 189, 0.55), transparent 65%),
-          radial-gradient(circle at 40% 40%, rgba(0, 139, 143, 0.5), transparent 72%);
-          opacity: 0.32;
-      }
-      
-      .hero-book__mountains {
-          position: absolute;
-          inset: 38% 0 32%;
-          background:
-          linear-gradient(to right,
-          rgba(0, 0, 0, 0.9),
-          rgba(4, 16, 32, 1) 22%,
-          rgba(1, 6, 12, 1) 60%,
-          rgba(2, 6, 10, 0.95));
-          clip-path: polygon(
-          0% 88%,
-          10% 62%,
-          18% 68%,
-          30% 46%,
-          44% 60%,
-          58% 26%,
-          68% 44%,
-          79% 34%,
-          90% 42%,
-          100% 26%,
-          100% 100%,
-          0% 100%
-          );
-          opacity: 0.92;
-      }
-      
-      /* --- Sekcje --- */
-      
-      main {
-          margin-top: 2.8rem;
-      }
-      
-      section.section {
-          margin-bottom: 3.2rem;
-          opacity: 0;
-          transform: translateY(16px);
-          transition: opacity 420ms ease-out, transform 420ms ease-out;
-      }
-      
-      section.section.section--visible {
-          opacity: 1;
-          transform: translateY(0);
-      }
-      
-      .section-inner {
-          border-radius: var(--radius-xl);
-          border: 1px solid var(--border-soft);
-          background: linear-gradient(
-          145deg,
-          rgba(2, 11, 24, 0.95),
-          rgba(3, 7, 16, 0.98)
-          );
-          padding: 1.6rem 1.8rem 1.9rem;
-          box-shadow: 0 24px 55px rgba(0, 0, 0, 0.9);
-      }
-      
-      .section-heading {
-          font-family: "Times New Roman", "Georgia", serif;
-          font-size: 1.4rem;
-          letter-spacing: 0.09em;
-          text-transform: uppercase;
-          color: var(--accent-gold);
-          margin-bottom: 0.85rem;
-      }
-      
-      .section-kicker {
-          text-transform: uppercase;
-          font-size: 0.7rem;
-          letter-spacing: 0.18em;
-          color: var(--accent-teal);
-          margin-bottom: 0.4rem;
-      }
-      
-      .section-body {
-          font-size: 0.95rem;
-          color: var(--text-main);
-          line-height: 1.7;
-      }
-      
-      .section-body p {
-          margin: 0.25rem 0 0.75rem;
-      }
-      
-      .section-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-          gap: 1.3rem;
-          margin-top: 1.1rem;
-      }
-      
-      .pill {
-          border-radius: 999px;
-          border: 1px solid rgba(245, 210, 122, 0.35);
-          padding: 0.55rem 0.9rem;
-          font-size: 0.8rem;
-          text-transform: uppercase;
-          letter-spacing: 0.14em;
-          color: var(--accent-gold-soft);
-          display: inline-flex;
-          align-items: center;
-          gap: 0.35rem;
-          margin-bottom: 1rem;
-      }
-      
-      .pill-dot {
-          width: 7px;
-          height: 7px;
-          border-radius: 50%;
-          background: var(--accent-teal);
-          box-shadow: 0 0 12px rgba(0, 139, 143, 0.9);
-      }
-      
-      .list-check {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-          font-size: 0.93rem;
-          color: var(--text-main);
-      }
-      
-      .list-check li {
-          display: flex;
-          align-items: flex-start;
-          gap: 0.6rem;
-          margin-bottom: 0.65rem;
-      }
-      
-      .list-check span.icon {
-          margin-top: 0.16rem;
-          width: 1rem;
-          height: 1rem;
-          border-radius: 999px;
-          border: 1px solid rgba(245, 210, 122, 0.7);
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 0.65rem;
-          color: var(--accent-gold);
-      }
-      
-      /* --- Newsletter --- */
-      
-      .newsletter {
-          display: grid;
-          grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.2fr);
-          gap: 1.6rem;
-          align-items: center;
-      }
-      
-      .newsletter-form {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.9rem;
-          margin-top: 0.8rem;
-      }
-      
-      .field {
-          flex: 1 1 220px;
-          position: relative;
-      }
-      
-      .field input[type="email"] {
-          width: 100%;
-          border-radius: 999px;
-          border: 1px solid rgba(245, 210, 122, 0.4);
-          background: rgba(2, 10, 20, 0.9);
-          color: var(--text-main);
-          padding: 0.85rem 1.05rem;
-          font-size: 0.95rem;
-          outline: none;
-          transition: border-color var(--transition-med),
-          box-shadow var(--transition-med),
-          background var(--transition-med);
-      }
-      
-      .field input::placeholder {
-          color: rgba(155, 168, 192, 0.75);
-      }
-      
-      .field input:focus-visible {
-          border-color: rgba(245, 210, 122, 0.85);
-          box-shadow: 0 0 0 1px rgba(245, 210, 122, 0.45),
-          0 0 0 8px rgba(245, 210, 122, 0.14);
-          background: rgba(2, 10, 20, 0.97);
-      }
-      
-      .newsletter-note {
-          font-size: 0.78rem;
-          color: var(--text-muted);
-          margin-top: 0.35rem;
-      }
-      
-      .badge-series {
-          font-size: 0.8rem;
-          text-transform: uppercase;
-          letter-spacing: 0.16em;
-          color: var(--accent-gold-soft);
-          margin-bottom: 0.25rem;
-      }
-      
-      .newsletter-success {
-          font-size: 0.87rem;
-          color: var(--accent-teal);
-          margin-top: 0.5rem;
-          display: none;
-      }
-      
-      .newsletter-success.visible {
-          display: block;
-      }
-      
-      /* --- Stopka --- */
-      
-      footer.site-footer {
-          border-top: 1px solid rgba(245, 210, 122, 0.16);
-          margin-top: auto;
-          padding: 1.4rem 1.4rem 2rem;
-          color: var(--text-muted);
-          font-size: 0.8rem;
-      }
-      
-      .footer-inner {
-          max-width: var(--max-width);
-          margin: 0 auto;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 1rem;
-          flex-wrap: wrap;
-      }
-      
-      .footer-inner span strong {
-          color: var(--accent-gold-soft);
-          font-weight: 600;
-      }
-      
-      .footer-links {
-          display: flex;
-          gap: 1rem;
-          flex-wrap: wrap;
-      }
-      
-      .footer-links a {
-          text-decoration: none;
-      }
-      
-      .footer-links a:hover {
-          color: var(--accent-gold-soft);
-      }
-      
-      /* --- Responsive --- */
-      
-      @media (max-width: 840px) {
-          header.site-header {
-              flex-direction: column;
-              align-items: flex-start;
-              gap: 0.65rem;
-          }
-          
-          nav.site-nav {
-              gap: 0.9rem;
-              flex-wrap: wrap;
-          }
-          
-          .hero {
-              grid-template-columns: minmax(0, 1fr);
-              margin-top: 1.4rem;
-          }
-          
-          .hero-cover-wrap {
-              justify-content: center;
-              order: -1;
-              margin-bottom: 0.6rem;
-          }
-          
-          .hero-book {
-              transform: perspective(1100px) rotateY(-10deg) rotateX(3deg) rotateZ(-1deg);
-              box-shadow:
-                0 18px 32px rgba(0, 0, 0, 0.85),
-                0 0 0 1px rgba(245, 210, 122, 0.35);
-          }
-          
-          .hero-copy-eyebrow {
-              margin-top: 0.5rem;
-          }
-      }
-      
-      @media (max-width: 640px) {
-          .shell {
-              padding-inline: 1rem;
-          }
-          
-          .hero-cta-row {
-              flex-direction: column;
-              align-items: stretch;
-          }
-          
-          .newsletter {
-              grid-template-columns: minmax(0, 1fr);
-          }
-          
-          .section-inner {
-              padding-inline: 1.2rem;
-          }
-      }
-      .footer-links .external-link {
-          color: var(--accent-gold-soft);
-          font-size: 0.85rem;
-          opacity: 0.85;
-          transition: opacity 0.25s ease, color 0.25s ease;
-          letter-spacing: 0.05em;
-      }
-      
-      .footer-links .external-link:hover {
-          opacity: 1;
-          color: var(--accent-gold);
-      }
-  </style>
-</head>
-
-<body class="page">
-<div class="star-layer"></div>
-<div class="gradient-overlay"></div>
-
-<div class="shell">
-  <header class="site-header" aria-label="Główna nawigacja">
-    <div class="brand">
-      <span class="brand-dot"></span>
-      <span>Detektywi z&nbsp;Wi-Fi</span>
-    </div>
-    <nav class="site-nav">
-      <a href="#about">O książce</a>
-      <a href="#who">Dla kogo</a>
-      <a href="#inside">Co w środku</a>
-    </nav>
-  </header>
-
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="hero-copy">
-      <div class="hero-copy-eyebrow">Nowa seria przygodowo-technologiczna</div>
-      <h1 id="hero-title" class="hero-title">Tajemnice cyfrowego świata</h1>
-      <p class="hero-subtitle">Pierwszy tom serii <strong>„Detektywi z&nbsp;Wi-Fi”</strong>.</p>
-      <p class="hero-tagline">
-        W starym garażu na Zielonych Wzgórzach monitory rzucają blade światło na ściany,
-        a czwórka przyjaciół odkrywa, że w Góraszynie dzieje się coś, czego dorośli nawet
-        nie zauważają. To, co widać na ekranie, jest tylko początkiem większej tajemnicy.
-      </p>
-
-      <div class="hero-cta-row">
-        <a href="#inside" class="btn btn-outline">
-          Zobacz, co znajdziesz w książce
-        </a>
-      </div>
-
-      <div class="hero-meta">
-        Trzynaście spraw splecionych w jedną historię i pytanie, które nie daje im spokoju:
-        <strong>kto naprawdę stoi po drugiej stronie ekranu?</strong>
-      </div>
-    </div>
-
-    <div class="hero-cover-wrap" aria-hidden="true">
-      <div class="hero-moon"></div>
-      <div class="hero-book"></div>
-    </div>
-  </section>
-
-  <main>
-    <section id="about" class="section" aria-labelledby="about-heading">
-      <div class="section-inner">
-        <h2 id="about-heading" class="section-heading">O książce</h2>
-        <div class="section-body">
-          <p>
-            W starym garażu na Zielonych Wzgórzach, gdzie monitory rzucają blade światło na ściany,
-            czwórka młodych detektywów odkrywa coś niepokojącego. W Góraszynie — spokojnym miasteczku
-            nad jeziorem rozlanym wśród zboczy gór — zaczynają dziać się rzeczy, których nikt nie potrafi
-            wyjaśnić.
-          </p>
-          <p>
-            Coś, czego nie widać gołym okiem, kryje się tam, gdzie nikt nie zagląda, a każdy trop prowadzi
-            w miejsca, o których istnieniu nawet nie wiedzieliście. Michał, Adam, Ela i Kasia szybko
-            rozumieją, że to, co widzą na swoich ekranach, to tylko wierzchołek góry lodowej.
-          </p>
-          <p>
-            Gdzieś w głębi cyfrowego świata kryje się prawda — ale czy są gotowi ją odkryć? Trzynaście spraw,
-            trzynaście zagadek splecionych w jedną tajemnicę. I pytanie, które nie daje im spokoju:
-            kto stoi po drugiej stronie ekranu i czego naprawdę chce?
-          </p>
-          <p>
-            Niektóre tajemnice zmieniają wszystko. Niektóre zagadki lepiej pozostawić nierozwiązane,
-            ale oni otworzyli już drzwi. Czy jesteście gotowi wejść za nimi?
-          </p>
+    <head>
+        <meta charset="UTF-8" />
+          <title>Detektywi z Wi-Fi: Tajemnice cyfrowego świata - Dominik Labudzinski</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="title" content="Detektywi z Wi-Fi: Tajemnice cyfrowego świata - Dominik Labudzinski"/>
+          <meta name="description" content="Detektywi z Wi-Fi: Tajemnice cyfrowego świata
+            W starym garażu na Zielonych Wzgórzach, gdzie monitory rzucają blade światło na
+            ściany, czwórka młodych..."/>
+          <meta property="og:title" content="Detektywi z Wi-Fi: Tajemnice cyfrowego świata | Dominik Labudzinski"/>
+          <meta property="og:type" content="books.book"/>
+          <meta property="og:description" content="Detektywi z Wi-Fi: Tajemnice cyfrowego świata
+          W starym garażu na Zielonych Wzg&oacute;rzach, gdzie monitory rzucają blade światło na
+          ściany, czw&oacute;rka młodych detektyw&oacute;w odkrywa coś niepokojącego. W..."/>
+          <meta property="books:author" content="Dominik Labudzinski"/>
+        <style>
+            :root {
+                --bg-deep: #010408;
+                --bg-deep-2: #030c16;
+                --bg-overlay: rgba(0, 0, 0, 0.5);
+                --accent-gold: #f5d27a;
+                --accent-gold-soft: #e7c36c;
+                --accent-teal: #008b8f;
+                --accent-teal-glow: #00d4d9;
+                --text-main: #f8f9fa;
+                --text-muted: #9ba8c0;
+                --border-soft: rgba(245, 210, 122, 0.25);
+                --shadow-deep: 0 32px 80px rgba(0, 0, 0, 0.95);
+                --radius-xl: 24px;
+                --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+                --transition-med: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+                --max-width: 1140px;
+            }
+            
+            * {
+                box-sizing: border-box;
+            }
+            
+            html, body {
+                margin: 0;
+                padding: 0;
+                background: radial-gradient(ellipse at 20% 10%, #1a2840 0%, var(--bg-deep-2) 35%, var(--bg-deep) 75%);
+                color: var(--text-main);
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                scroll-behavior: smooth;
+                overflow-x: hidden;
+            }
+            
+            body {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+            }
+            a {
+                 color: inherit;
+                 text-decoration: none;
+             }
+            /* Tajemnicze tło - gwiazdy i efekty */
+            .star-layer {
+                position: fixed;
+                inset: 0;
+                pointer-events: none;
+                z-index: -2;
+                background-image:
+                radial-gradient(1.5px 1.5px at 15% 25%, rgba(255, 255, 255, 0.85), transparent),
+                radial-gradient(1px 1px at 85% 15%, rgba(255, 255, 255, 0.7), transparent),
+                radial-gradient(2px 2px at 45% 65%, rgba(0, 212, 217, 0.6), transparent),
+                radial-gradient(1px 1px at 70% 80%, rgba(245, 210, 122, 0.5), transparent),
+                radial-gradient(1.5px 1.5px at 25% 90%, rgba(255, 255, 255, 0.6), transparent),
+                radial-gradient(1px 1px at 90% 40%, rgba(255, 255, 255, 0.65), transparent);
+                opacity: 0.6;
+                animation: twinkle 8s ease-in-out infinite alternate;
+            }
+            
+            @keyframes twinkle {
+                0%, 100% { opacity: 0.5; }
+                50% { opacity: 0.8; }
+            }
+            
+            .gradient-overlay {
+                position: fixed;
+                inset: 0;
+                pointer-events: none;
+                z-index: -1;
+                background:
+                radial-gradient(circle at 60% -15%, rgba(0, 139, 143, 0.35), transparent 60%),
+                radial-gradient(circle at 80% 110%, rgba(245, 210, 122, 0.12), transparent 50%),
+                linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+                mix-blend-mode: screen;
+                opacity: 0.85;
+            }
+            
+            /* Mgła */
+            .mist {
+                position: fixed;
+                inset: 0;
+                pointer-events: none;
+                z-index: 0;
+                background:
+                radial-gradient(ellipse at 30% 50%, rgba(0, 139, 143, 0.08), transparent 70%),
+                radial-gradient(ellipse at 70% 60%, rgba(245, 210, 122, 0.05), transparent 65%);
+                animation: mistFloat 15s ease-in-out infinite alternate;
+            }
+            
+            @keyframes mistFloat {
+                0% { transform: translateY(0) scale(1); }
+                100% { transform: translateY(-20px) scale(1.05); }
+            }
+            
+            .shell {
+                width: 100%;
+                max-width: var(--max-width);
+                margin: 0 auto;
+                padding: 1.5rem 1.5rem 4rem;
+                position: relative;
+                z-index: 1;
+            }
+            
+            /* Header z lepszym efektem blur */
+            header.site-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1.2rem 1.5rem;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                backdrop-filter: blur(20px) saturate(180%);
+                background: rgba(1, 4, 8, 0.85);
+                border-bottom: 1px solid rgba(245, 210, 122, 0.1);
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+                transition: all var(--transition-med);
+            }
+            
+            header.site-header.scrolled {
+                background: rgba(1, 4, 8, 0.95);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            }
+            
+            .brand {
+                font-size: 0.95rem;
+                letter-spacing: 0.3em;
+                text-transform: uppercase;
+                color: var(--accent-gold-soft);
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                transition: color var(--transition-fast);
+            }
+            
+            .brand:hover {
+                color: var(--accent-gold);
+            }
+            
+            .brand-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--accent-teal);
+                box-shadow:
+                0 0 12px var(--accent-teal-glow),
+                0 0 24px var(--accent-teal);
+                animation: pulse 3s ease-in-out infinite;
+            }
+            
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); opacity: 1; }
+                50% { transform: scale(1.2); opacity: 0.8; }
+            }
+            
+            nav.site-nav {
+                display: flex;
+                gap: 2rem;
+                font-size: 0.92rem;
+                color: var(--text-muted);
+            }
+            
+            nav.site-nav a {
+                position: relative;
+                padding: 0.3rem 0;
+                transition: color var(--transition-fast);
+            }
+            
+            nav.site-nav a::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 0;
+                height: 2px;
+                background: linear-gradient(90deg, var(--accent-gold), var(--accent-teal-glow));
+                border-radius: 2px;
+                transition: width var(--transition-med);
+            }
+            
+            nav.site-nav a:hover {
+                color: var(--accent-gold);
+            }
+            
+            nav.site-nav a:hover::after {
+                width: 100%;
+            }
+            
+            /* Hero section */
+            .hero {
+                margin-top: 2rem;
+                display: grid;
+                grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
+                gap: 3rem;
+                align-items: center;
+            }
+            
+            .hero-copy-eyebrow {
+                font-size: 0.85rem;
+                color: var(--accent-teal-glow);
+                letter-spacing: 0.25em;
+                text-transform: uppercase;
+                margin-bottom: 0.8rem;
+                font-weight: 600;
+                display: inline-block;
+                animation: fadeInUp 0.8s ease-out;
+            }
+            
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .hero-title {
+                font-family: "Georgia", "Times New Roman", serif;
+                font-weight: 700;
+                font-size: clamp(2.4rem, 4vw + 1rem, 3.6rem);
+                letter-spacing: 0.05em;
+                line-height: 1.1;
+                text-transform: uppercase;
+                color: var(--accent-gold);
+                text-shadow:
+                0 0 20px rgba(245, 210, 122, 0.4),
+                0 4px 12px rgba(0, 0, 0, 0.9);
+                margin-bottom: 1rem;
+                animation: fadeInUp 0.8s ease-out 0.2s both;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+                color: var(--text-main);
+                margin-bottom: 0.6rem;
+                animation: fadeInUp 0.8s ease-out 0.3s both;
+            }
+            
+            .hero-tagline {
+                font-size: 1rem;
+                color: var(--text-muted);
+                line-height: 1.6;
+                max-width: 36rem;
+                margin-bottom: 2rem;
+                animation: fadeInUp 0.8s ease-out 0.4s both;
+            }
+            
+            .hero-cta-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin-bottom: 2rem;
+                animation: fadeInUp 0.8s ease-out 0.5s both;
+            }
+            
+            .btn {
+                border-radius: 999px;
+                padding: 0.9rem 2rem;
+                font-size: 0.92rem;
+                border: 1px solid transparent;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.6rem;
+                transition: all var(--transition-med);
+                text-transform: uppercase;
+                letter-spacing: 0.15em;
+                font-weight: 600;
+                text-decoration: none;
+                white-space: nowrap;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .btn::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+                transform: translateX(-100%);
+                transition: transform 0.6s ease;
+            }
+            
+            .btn:hover::before {
+                transform: translateX(100%);
+            }
+            
+            .btn-primary {
+                background: linear-gradient(135deg, #ffe9a8 0%, #f5d27a 50%, #d4a84e 100%);
+                color: #1a0f00;
+                box-shadow:
+                0 0 0 1px rgba(212, 168, 78, 0.5),
+                0 8px 24px rgba(245, 210, 122, 0.3),
+                0 20px 40px rgba(0, 0, 0, 0.4);
+            }
+            
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow:
+                0 0 0 1px rgba(245, 210, 122, 0.9),
+                0 12px 32px rgba(245, 210, 122, 0.4),
+                0 24px 48px rgba(0, 0, 0, 0.5);
+            }
+            
+            .btn-outline {
+                background: rgba(1, 8, 16, 0.6);
+                border-color: rgba(245, 210, 122, 0.5);
+                color: var(--accent-gold);
+                backdrop-filter: blur(10px);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            }
+            
+            .btn-outline:hover {
+                background: rgba(245, 210, 122, 0.1);
+                border-color: var(--accent-gold);
+                transform: translateY(-2px);
+                box-shadow:
+                0 0 20px rgba(245, 210, 122, 0.3),
+                0 12px 32px rgba(0, 0, 0, 0.5);
+            }
+            
+            .hero-meta {
+                font-size: 0.9rem;
+                color: var(--text-muted);
+                line-height: 1.6;
+                animation: fadeInUp 0.8s ease-out 0.6s both;
+                margin-bottom: 1rem;
+            }
+            
+            .hero-meta strong {
+                color: var(--accent-gold-soft);
+                font-weight: 600;
+            }
+            
+            /* Książka - ulepszona wersja 3D */
+            .hero-cover-wrap {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                animation: fadeInUp 0.8s ease-out 0.4s both;
+            }
+            
+            .hero-moon {
+                position: absolute;
+                top: -60px;
+                right: 10%;
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                background: radial-gradient(circle at 35% 35%, #fffef0 0%, #f5f1d0 30%, #b8d4cc 60%, #1f3644 100%);
+                box-shadow:
+                0 0 30px rgba(255, 254, 240, 0.6),
+                0 0 60px rgba(0, 139, 143, 0.4),
+                0 0 100px rgba(0, 139, 143, 0.2);
+                opacity: 0.95;
+                animation: moonGlow 6s ease-in-out infinite alternate;
+            }
+            
+            @keyframes moonGlow {
+                0%, 100% {
+                    box-shadow:
+                    0 0 30px rgba(255, 254, 240, 0.5),
+                    0 0 60px rgba(0, 139, 143, 0.3),
+                    0 0 100px rgba(0, 139, 143, 0.15);
+                }
+                50% {
+                    box-shadow:
+                    0 0 40px rgba(255, 254, 240, 0.8),
+                    0 0 80px rgba(0, 139, 143, 0.5),
+                    0 0 120px rgba(0, 139, 143, 0.3);
+                }
+            }
+            
+            .hero-book {
+                position: relative;
+                width: min(100%, 320px);
+                aspect-ratio: 3 / 4.5;
+                background-image: url("https://wydawnictwo.lemric.com/ebook-cover.jpg");
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-color: #0a1520;
+                transform-origin: center center;
+                transform: perspective(1400px) rotateY(-15deg) rotateX(5deg) rotateZ(-2deg);
+                box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.9),
+                0 0 0 1px rgba(245, 210, 122, 0.3),
+                -10px 0 30px rgba(0, 0, 0, 0.5);
+                transition: transform var(--transition-med), box-shadow var(--transition-med);
+                overflow: visible;
+                animation: bookFloat 6s ease-in-out infinite;
+            }
+            
+            @keyframes bookFloat {
+                0%, 100% { transform: perspective(1400px) rotateY(-15deg) rotateX(5deg) rotateZ(-2deg) translateY(0); }
+                50% { transform: perspective(1400px) rotateY(-15deg) rotateX(5deg) rotateZ(-2deg) translateY(-8px); }
+            }
+            
+            .hero-book:hover {
+                transform: perspective(1400px) rotateY(-12deg) rotateX(3deg) rotateZ(-1deg) translateY(-10px);
+                box-shadow:
+                0 40px 80px rgba(0, 0, 0, 0.95),
+                0 0 0 1px rgba(245, 210, 122, 0.5),
+                -12px 0 40px rgba(0, 0, 0, 0.6),
+                0 0 60px rgba(0, 139, 143, 0.2);
+            }
+            
+            /* Połysk na okładce */
+            .hero-book::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background:
+                linear-gradient(
+                120deg,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0.12) 12%,
+                transparent 35%
+                );
+                mix-blend-mode: screen;
+                pointer-events: none;
+            }
+            
+            /* NOWY REALISTYCZNY GRZBIET Z KARTKAMI */
+            .hero-book::after {
+                content: "";
+                position: absolute;
+                top: 2%;
+                bottom: 2%;
+                right: -10px;
+                width: 10px;
+                background: linear-gradient(to right,
+                #ede5d8 0%,
+                #f5efe5 15%,
+                #fff9f0 30%,
+                #f5efe5 50%,
+                #ede5d8 70%,
+                #ddd5c8 100%
+                );
+                border-radius: 0 3px 3px 0;
+                box-shadow:
+                inset 1px 0 2px rgba(0, 0, 0, 0.15),
+                inset -1px 0 1px rgba(255, 255, 255, 0.3),
+                2px 0 8px rgba(0, 0, 0, 0.5),
+                4px 0 15px rgba(0, 0, 0, 0.3);
+                
+                /* Tekstura kartek */
+                background-image:
+                /* Pojedyncze kartki - różne odcienie */
+                linear-gradient(to bottom,
+                transparent 0%, transparent 3%,
+                rgba(0, 0, 0, 0.03) 3%, rgba(0, 0, 0, 0.03) 3.5%,
+                transparent 3.5%, transparent 6.5%,
+                rgba(0, 0, 0, 0.04) 6.5%, rgba(0, 0, 0, 0.04) 7%,
+                transparent 7%, transparent 9.8%,
+                rgba(0, 0, 0, 0.035) 9.8%, rgba(0, 0, 0, 0.035) 10.3%,
+                transparent 10.3%, transparent 13%,
+                rgba(0, 0, 0, 0.045) 13%, rgba(0, 0, 0, 0.045) 13.5%,
+                transparent 13.5%, transparent 16.2%,
+                rgba(0, 0, 0, 0.04) 16.2%, rgba(0, 0, 0, 0.04) 16.7%,
+                transparent 16.7%, transparent 19.5%,
+                rgba(0, 0, 0, 0.038) 19.5%, rgba(0, 0, 0, 0.038) 20%,
+                transparent 20%, transparent 22.8%,
+                rgba(0, 0, 0, 0.042) 22.8%, rgba(0, 0, 0, 0.042) 23.3%,
+                transparent 23.3%, transparent 26%,
+                rgba(0, 0, 0, 0.04) 26%, rgba(0, 0, 0, 0.04) 26.5%,
+                transparent 26.5%, transparent 29.3%,
+                rgba(0, 0, 0, 0.037) 29.3%, rgba(0, 0, 0, 0.037) 29.8%,
+                transparent 29.8%, transparent 32.5%,
+                rgba(0, 0, 0, 0.043) 32.5%, rgba(0, 0, 0, 0.043) 33%,
+                transparent 33%, transparent 35.8%,
+                rgba(0, 0, 0, 0.039) 35.8%, rgba(0, 0, 0, 0.039) 36.3%,
+                transparent 36.3%, transparent 39%,
+                rgba(0, 0, 0, 0.041) 39%, rgba(0, 0, 0, 0.041) 39.5%,
+                transparent 39.5%, transparent 42.3%,
+                rgba(0, 0, 0, 0.038) 42.3%, rgba(0, 0, 0, 0.038) 42.8%,
+                transparent 42.8%, transparent 45.5%,
+                rgba(0, 0, 0, 0.044) 45.5%, rgba(0, 0, 0, 0.044) 46%,
+                transparent 46%, transparent 48.8%,
+                rgba(0, 0, 0, 0.04) 48.8%, rgba(0, 0, 0, 0.04) 49.3%,
+                transparent 49.3%, transparent 52%,
+                rgba(0, 0, 0, 0.036) 52%, rgba(0, 0, 0, 0.036) 52.5%,
+                transparent 52.5%, transparent 55.3%,
+                rgba(0, 0, 0, 0.042) 55.3%, rgba(0, 0, 0, 0.042) 55.8%,
+                transparent 55.8%, transparent 58.5%,
+                rgba(0, 0, 0, 0.039) 58.5%, rgba(0, 0, 0, 0.039) 59%,
+                transparent 59%, transparent 61.8%,
+                rgba(0, 0, 0, 0.041) 61.8%, rgba(0, 0, 0, 0.041) 62.3%,
+                transparent 62.3%, transparent 65%,
+                rgba(0, 0, 0, 0.037) 65%, rgba(0, 0, 0, 0.037) 65.5%,
+                transparent 65.5%, transparent 68.3%,
+                rgba(0, 0, 0, 0.043) 68.3%, rgba(0, 0, 0, 0.043) 68.8%,
+                transparent 68.8%, transparent 71.5%,
+                rgba(0, 0, 0, 0.04) 71.5%, rgba(0, 0, 0, 0.04) 72%,
+                transparent 72%, transparent 74.8%,
+                rgba(0, 0, 0, 0.038) 74.8%, rgba(0, 0, 0, 0.038) 75.3%,
+                transparent 75.3%, transparent 78%,
+                rgba(0, 0, 0, 0.042) 78%, rgba(0, 0, 0, 0.042) 78.5%,
+                transparent 78.5%, transparent 81.3%,
+                rgba(0, 0, 0, 0.039) 81.3%, rgba(0, 0, 0, 0.039) 81.8%,
+                transparent 81.8%, transparent 84.5%,
+                rgba(0, 0, 0, 0.041) 84.5%, rgba(0, 0, 0, 0.041) 85%,
+                transparent 85%, transparent 87.8%,
+                rgba(0, 0, 0, 0.037) 87.8%, rgba(0, 0, 0, 0.037) 88.3%,
+                transparent 88.3%, transparent 91%,
+                rgba(0, 0, 0, 0.044) 91%, rgba(0, 0, 0, 0.044) 91.5%,
+                transparent 91.5%, transparent 94.3%,
+                rgba(0, 0, 0, 0.04) 94.3%, rgba(0, 0, 0, 0.04) 94.8%,
+                transparent 94.8%, transparent 97.5%,
+                rgba(0, 0, 0, 0.036) 97.5%, rgba(0, 0, 0, 0.036) 98%,
+                transparent 98%, transparent 100%
+                );
+                background-blend-mode: multiply;
+            }
+            
+            /* Grzbiet książki */
+            .hero-book__spine {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: -14px;
+                width: 16px;
+                background: linear-gradient(to right,
+                #030a15 0%,
+                #0f1a28 25%,
+                #1a2835 50%,
+                #0f1a28 75%,
+                #030a15 100%
+                );
+                border-radius: 2px 0 0 2px;
+                box-shadow:
+                inset -3px 0 4px rgba(0, 0, 0, 0.8),
+                inset 1px 0 1px rgba(255, 255, 255, 0.05),
+                -2px 0 10px rgba(0, 0, 0, 0.7);
+            }
+            
+            .hero-book__spine-label {
+                position: absolute;
+                top: 50%;
+                left: -10px;
+                writing-mode: vertical-rl;
+                transform: translateY(-50%);
+                font-size: 0.65rem;
+                letter-spacing: 0.2em;
+                color: #f1d58a;
+                text-transform: uppercase;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+            }
+            
+            /* Sekcje */
+            section.section {
+                margin-bottom: 4rem;
+                opacity: 0;
+                transform: translateY(30px);
+                transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            }
+            
+            section.section.section--visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            .section-inner {
+                border-radius: var(--radius-xl);
+                border: 1px solid var(--border-soft);
+                background:
+                linear-gradient(145deg,
+                rgba(1, 8, 18, 0.95),
+                rgba(2, 6, 14, 0.98)
+                );
+                padding: 2.5rem 2.5rem 3rem;
+                box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(245, 210, 122, 0.1);
+                backdrop-filter: blur(10px);
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .section-inner::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 300px;
+                height: 300px;
+                background: radial-gradient(circle, rgba(0, 139, 143, 0.08), transparent 70%);
+                pointer-events: none;
+            }
+            
+            .section-heading {
+                font-family: "Georgia", "Times New Roman", serif;
+                font-size: 1.6rem;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--accent-gold);
+                margin-bottom: 1.2rem;
+                position: relative;
+                display: inline-block;
+            }
+            
+            .section-heading::after {
+                content: "";
+                position: absolute;
+                bottom: -8px;
+                left: 0;
+                width: 60px;
+                height: 3px;
+                background: linear-gradient(90deg, var(--accent-gold), var(--accent-teal-glow));
+                border-radius: 2px;
+            }
+            
+            .section-kicker {
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                letter-spacing: 0.2em;
+                color: var(--accent-teal-glow);
+                margin-bottom: 0.5rem;
+                font-weight: 600;
+            }
+            
+            .section-body {
+                font-size: 1rem;
+                color: var(--text-main);
+                line-height: 1.7;
+                position: relative;
+            }
+            
+            .section-body p {
+                margin: 0 0 1rem;
+            }
+            
+            .section-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                gap: 2rem;
+                margin-top: 1.5rem;
+            }
+            
+            .pill {
+                border-radius: 999px;
+                border: 1px solid rgba(245, 210, 122, 0.4);
+                padding: 0.6rem 1.1rem;
+                font-size: 0.82rem;
+                text-transform: uppercase;
+                letter-spacing: 0.16em;
+                color: var(--accent-gold-soft);
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+                margin-bottom: 1.2rem;
+                background: rgba(245, 210, 122, 0.05);
+                backdrop-filter: blur(10px);
+            }
+            
+            .pill-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--accent-teal);
+                box-shadow: 0 0 12px rgba(0, 212, 217, 0.8);
+                animation: pulse 3s ease-in-out infinite;
+            }
+            
+            .list-check {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                font-size: 0.95rem;
+                color: var(--text-main);
+            }
+            
+            .list-check li {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.8rem;
+                margin-bottom: 0.8rem;
+                transition: transform var(--transition-fast);
+            }
+            
+            .list-check li:hover {
+                transform: translateX(4px);
+            }
+            
+            .list-check span.icon {
+                margin-top: 0.2rem;
+                width: 1.1rem;
+                height: 1.1rem;
+                border-radius: 50%;
+                border: 2px solid var(--accent-gold);
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.7rem;
+                color: var(--accent-gold);
+                flex-shrink: 0;
+                background: rgba(245, 210, 122, 0.1);
+            }
+            
+            /* Footer */
+            footer.site-footer {
+                border-top: 1px solid rgba(245, 210, 122, 0.15);
+                margin-top: auto;
+                padding: 2rem 1.5rem;
+                color: var(--text-muted);
+                font-size: 0.85rem;
+                background: rgba(1, 4, 8, 0.6);
+                backdrop-filter: blur(10px);
+            }
+            
+            .footer-inner {
+                max-width: var(--max-width);
+                margin: 0 auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 1.5rem;
+                flex-wrap: wrap;
+            }
+            
+            .footer-inner span strong {
+                color: var(--accent-gold-soft);
+                font-weight: 600;
+            }
+            
+            .footer-links {
+                display: flex;
+                gap: 1.5rem;
+                flex-wrap: wrap;
+            }
+            
+            .footer-links .external-link {
+                color: var(--accent-gold-soft);
+                font-size: 0.88rem;
+                opacity: 0.9;
+                transition: all var(--transition-fast);
+                letter-spacing: 0.05em;
+                position: relative;
+            }
+            
+            .footer-links .external-link::after {
+                content: "";
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 0;
+                height: 1px;
+                background: var(--accent-gold);
+                transition: width var(--transition-med);
+            }
+            
+            .footer-links .external-link:hover {
+                opacity: 1;
+                color: var(--accent-gold);
+            }
+            
+            .footer-links .external-link:hover::after {
+                width: 100%;
+            }
+            
+            /* Responsive */
+            @media (max-width: 900px) {
+                header.site-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 1rem;
+                }
+                
+                nav.site-nav {
+                    gap: 1.2rem;
+                    flex-wrap: wrap;
+                }
+                
+                .hero {
+                    grid-template-columns: 1fr;
+                    gap: 2rem;
+                    margin-top: 1.5rem;
+                }
+                
+                .hero-cover-wrap {
+                    justify-content: center;
+                    order: -1;
+                }
+                
+                .hero-book {
+                    width: min(100%, 280px);
+                }
+                
+                .hero-moon {
+                    top: -50px;
+                    width: 80px;
+                    height: 80px;
+                }
+            }
+            
+            @media (max-width: 640px) {
+                .shell {
+                    padding-inline: 1.2rem;
+                }
+                
+                .hero-title {
+                    font-size: 2rem;
+                }
+                
+                .section-inner {
+                    padding: 1.8rem 1.5rem 2rem;
+                }
+                
+                .section-grid {
+                    grid-template-columns: 1fr;
+                    gap: 1.5rem;
+                }
+                
+                .hero-cta-row {
+                    flex-direction: column;
+                }
+                
+                .btn {
+                    justify-content: center;
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+    
+    <body class="page">
+        <div class="star-layer"></div>
+        <div class="gradient-overlay"></div>
+        <div class="mist"></div>
+        
+        <div class="shell">
+            <header class="site-header" aria-label="Główna nawigacja">
+                <div class="brand">
+                    <span class="brand-dot"></span>
+                    <span>Detektywi z&nbsp;Wi-Fi</span>
+                </div>
+                <nav class="site-nav">
+                    <a href="#about">O książce</a>
+                    <a href="#who">Dla kogo</a>
+                    <a href="#inside">Co w środku</a>
+                </nav>
+            </header>
+            
+            <section class="hero" aria-labelledby="hero-title">
+                <div class="hero-copy">
+                    <div class="hero-copy-eyebrow">Nowa seria przygodowo-technologiczna</div>
+                    <h1 id="hero-title" class="hero-title">Tajemnice cyfrowego świata</h1>
+                    <p class="hero-subtitle">Pierwszy tom serii <strong>"Detektywi z&nbsp;Wi-Fi"</strong>.</p>
+                    <p class="hero-tagline">
+                    W starym garażu na Zielonych Wzgórzach monitory rzucają blade światło na ściany,
+                    a czwórka przyjaciół odkrywa, że w Góraszynie dzieje się coś, czego dorośli nawet
+                    nie zauważają. To, co widać na ekranie, jest tylko początkiem większej tajemnicy.
+                    </p>
+                    
+                    <div class="hero-cta-row">
+                        <a href="#inside" class="btn btn-outline">
+                            Zobacz, co znajdziesz w książce
+                        </a>
+                    </div>
+                    
+                    <div class="hero-meta">
+                        Trzynaście spraw splecionych w jedną historię i pytanie, które nie daje im spokoju:
+                        <strong>kto naprawdę stoi po drugiej stronie ekranu?</strong>
+                    </div>
+                </div>
+                
+                <div class="hero-cover-wrap" aria-hidden="true">
+                    <div class="hero-moon"></div>
+                    <div class="hero-book">
+                        <div class="hero-book__spine">
+                            <span class="hero-book__spine-label">Detektywi z Wi-Fi</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <main>
+                <section id="about" class="section" aria-labelledby="about-heading">
+                    <div class="section-inner">
+                        <h2 id="about-heading" class="section-heading">O książce</h2>
+                        <div class="section-body">
+                            <p>
+                            W starym garażu na Zielonych Wzgórzach, gdzie monitory rzucają blade światło na ściany,
+                            czwórka młodych detektywów odkrywa coś niepokojącego. W Góraszynie — spokojnym miasteczku
+                            nad jeziorem rozlanym wśród zboczy gór — zaczynają dziać się rzeczy, których nikt nie potrafi
+                            wyjaśnić.
+                            </p>
+                            <p>
+                            Coś, czego nie widać gołym okiem, kryje się tam, gdzie nikt nie zagląda, a każdy trop prowadzi
+                            w miejsca, o których istnieniu nawet nie wiedzieliście. Michał, Adam, Ela i Kasia szybko
+                            rozumieją, że to, co widzą na swoich ekranach, to tylko wierzchołek góry lodowej.
+                            </p>
+                            <p>
+                            Gdzieś w głębi cyfrowego świata kryje się prawda — ale czy są gotowi ją odkryć? Trzynaście spraw,
+                            trzynaście zagadek splecionych w jedną tajemnicę. I pytanie, które nie daje im spokoju:
+                            kto stoi po drugiej stronie ekranu i czego naprawdę chce?
+                            </p>
+                            <p>
+                            Niektóre tajemnice zmieniają wszystko. Niektóre zagadki lepiej pozostawić nierozwiązane,
+                            ale oni otworzyli już drzwi. Czy jesteście gotowi wejść za nimi?
+                            </p>
+                        </div>
+                        <div class="section-grid">
+                            <div>
+                                <div class="pill">
+                                    <span class="pill-dot"></span>
+                                    13 połączonych spraw
+                                </div>
+                                <ul class="list-check" aria-label="Główne motywy książki">
+                                    <li><span class="icon">✓</span><span>Dochodzenia prowadzone jednocześnie w rzeczywistości i w Internecie.</span></li>
+                                    <li><span class="icon">✓</span><span>Zagadki, tajemnice i wskazówki ukryte głęboko w cyfrowym świecie.</span></li>
+                                    <li><span class="icon">✓</span><span>Rosnące napięcie od pierwszej tajemnicy.</span></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="pill">
+                                    <span class="pill-dot"></span>
+                                    Klimat Góraszyna
+                                </div>
+                                <ul class="list-check">
+                                    <li><span class="icon">✓</span><span>Osiedle Zielone Wzgórza, stara stacja kolejowa i mroczne brzegi jeziora.</span></li>
+                                    <li><span class="icon">✓</span><span>Atmosfera tajemnicy znana z klasycznych powieści przygodowych przeniesiona do ery cyfrowej.</span></li>
+                                    <li><span class="icon">✓</span><span>Miasto, które wydaje się spokojne — dopóki nie przyjrzymy się mu bliżej.</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="who" class="section" aria-labelledby="who-heading">
+                    <div class="section-inner">
+                        <h2 id="who-heading" class="section-heading">Dla kogo jest ta książka?</h2>
+                        <div class="section-body section-grid">
+                            <div>
+                                <p><strong>Dla młodych czytelników (ok. 10–15 lat)</strong>, którzy:</p>
+                                <ul class="list-check">
+                                    <li><span class="icon">✓</span><span>lubią zagadki, śledztwa i tajemnice z dreszczykiem;</span></li>
+                                    <li><span class="icon">✓</span><span>spędzają czas online i chcą lepiej zrozumieć, co dzieje się "po drugiej stronie ekranu";</span></li>
+                                    <li><span class="icon">✓</span><span>szukają bohaterów, którzy mają normalne problemy, a jednocześnie mierzą się z czymś większym niż szkolna codzienność.</span></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p><strong>Dla dorosłych</strong>, którzy:</p>
+                                <ul class="list-check">
+                                    <li><span class="icon">✓</span><span>chcą lepiej rozumieć, z czym ich dzieci naprawdę stykają się w internecie;</span></li>
+                                    <li><span class="icon">✓</span><span>szukają punktu wyjścia do rozmów o bezpieczeństwie, prywatności i zaufaniu online;</span></li>
+                                    <li><span class="icon">✓</span><span>doceniają połączenie fabuły z rzetelnym pokazaniem, jak działa współczesny cyfrowy świat.</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="inside" class="section" aria-labelledby="inside-heading">
+                    <div class="section-inner">
+                        <h2 id="inside-heading" class="section-heading">Co znajdziesz w środku?</h2>
+                        <div class="section-body">
+                            <div class="section-grid">
+                                <div>
+                                    <ul class="list-check">
+                                        <li><span class="icon">✓</span><span>Trzynaście spraw, które stopniowo układają się w jedno duże śledztwo.</span></li>
+                                        <li><span class="icon">✓</span><span>Ślady ukryte w logach, wiadomościach, aplikacjach i urządzeniach podłączonych do sieci.</span></li>
+                                        <li><span class="icon">✓</span><span>Sceny, które można łatwo przenieść do rzeczywistości własnej szkoły i domu.</span></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <ul class="list-check">
+                                        <li><span class="icon">✓</span><span>Wątki dotyczące prywatności, fałszywych kont, manipulacji informacją i gier online.</span></li>
+                                        <li><span class="icon">✓</span><span>Przyjaźń, lojalność i wybory, które nie zawsze są oczywiste, gdy stawką jest czyjeś bezpieczeństwo.</span></li>
+                                        <li><span class="icon">✓</span><span>Góraszyn — miejsce, do którego będziecie chcieli wracać w kolejnych tomach Detektywów z Wi-Fi.</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <p style="margin-top:1.5rem;">
+                            To nie jest poradnik ani szkolna pogadanka. To pełnoprawna powieść, w której technologia
+                            jest naturalnym elementem świata bohaterów, a każde kliknięcie może być początkiem nowej sprawy.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </main>
         </div>
-        <div class="section-grid">
-          <div>
-            <div class="pill">
-              <span class="pill-dot"></span>
-              13 połączonych spraw
+        
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <span>© <span id="year"></span> <strong>Dominik Łabudziński</strong>. Wszystkie prawa zastrzeżone.</span>
+                <div class="footer-links">
+                    <a href="https://lubimyczytac.pl/ksiazka/5215154/detektywi-z-wi-fi-tajemnice-cyfrowego-swiata"
+                        class="external-link"
+                        target="_blank"
+                        rel="noopener">
+                        Zobacz książkę na Lubimyczytać.pl
+                    </a>
+                </div>
             </div>
-            <ul class="list-check" aria-label="Główne motywy książki">
-              <li><span class="icon">✓</span><span>Dochodzenia prowadzone jednocześnie w rzeczywistości i w Internecie.</span></li>
-              <li><span class="icon">✓</span><span>Zagadki, tajemnice i wskazówki ukryte głęboko w cyfrowym świecie.</span></li>
-              <li><span class="icon">✓</span><span>Rosnące napięcie od pierwszej tajemnicy.</span></li>
-            </ul>
-          </div>
-          <div>
-            <div class="pill">
-              <span class="pill-dot"></span>
-              Klimat Góraszyna
-            </div>
-            <ul class="list-check">
-              <li><span class="icon">✓</span><span>Osiedle Zielone Wzgórza, stara stacja kolejowa i mroczne brzegi jeziora.</span></li>
-              <li><span class="icon">✓</span><span>Atmosfera tajemnicy znana z klasycznych powieści przygodowych przeniesiona do ery cyfrowej.</span></li>
-              <li><span class="icon">✓</span><span>Miasto, które wydaje się spokojne – dopóki nie przyjrzymy się mu bliżej.</span></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="who" class="section" aria-labelledby="who-heading">
-      <div class="section-inner">
-        <h2 id="who-heading" class="section-heading">Dla kogo jest ta książka?</h2>
-        <div class="section-body section-grid">
-          <div>
-            <p><strong>Dla młodych czytelników (ok. 10–15 lat)</strong>, którzy:</p>
-            <ul class="list-check">
-              <li><span class="icon">✓</span><span>lubią zagadki, śledztwa i tajemnice z dreszczykiem;</span></li>
-              <li><span class="icon">✓</span><span>spędzają czas online i chcą lepiej zrozumieć, co dzieje się „po drugiej stronie ekranu”;</span></li>
-              <li><span class="icon">✓</span><span>szukają bohaterów, którzy mają normalne problemy, a jednocześnie mierzą się z czymś większym niż szkolna codzienność.</span></li>
-            </ul>
-          </div>
-          <div>
-            <p><strong>Dla dorosłych</strong>, którzy:</p>
-            <ul class="list-check">
-              <li><span class="icon">✓</span><span>chcą lepiej rozumieć, z czym ich dzieci naprawdę stykają się w internecie;</span></li>
-              <li><span class="icon">✓</span><span>szukają punktu wyjścia do rozmów o bezpieczeństwie, prywatności i zaufaniu online;</span></li>
-              <li><span class="icon">✓</span><span>docenią połączenie fabuły z rzetelnym pokazaniem, jak działa współczesny cyfrowy świat.</span></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="inside" class="section" aria-labelledby="inside-heading">
-      <div class="section-inner">
-        <h2 id="inside-heading" class="section-heading">Co znajdziesz w środku?</h2>
-        <div class="section-body">
-          <div class="section-grid">
-            <div>
-              <ul class="list-check">
-                <li><span class="icon">✓</span><span>Trzynaście spraw, które stopniowo układają się w jedno duże śledztwo.</span></li>
-                <li><span class="icon">✓</span><span>Ślady ukryte w logach, wiadomościach, aplikacjach i urządzeniach podłączonych do sieci.</span></li>
-                <li><span class="icon">✓</span><span>Sceny, które można łatwo przenieść do rzeczywistości własnej szkoły i domu.</span></li>
-              </ul>
-            </div>
-            <div>
-              <ul class="list-check">
-                <li><span class="icon">✓</span><span>Wątki dotyczące prywatności, fałszywych kont, manipulacji informacją i gier online.</span></li>
-                <li><span class="icon">✓</span><span>Przyjaźń, lojalność i wybory, które nie zawsze są oczywiste, gdy stawką jest czyjeś bezpieczeństwo.</span></li>
-                <li><span class="icon">✓</span><span>Góraszyn – miejsce, do którego będziecie chcieli wracać w kolejnych tomach Detektywów z Wi-Fi.</span></li>
-              </ul>
-            </div>
-          </div>
-          <p style="margin-top:1rem;">
-            To nie jest poradnik ani szkolna pogadanka. To pełnoprawna powieść, w której technologia
-            jest naturalnym elementem świata bohaterów, a każde kliknięcie może być początkiem nowej sprawy.
-          </p>
-        </div>
-      </div>
-    </section>
-  </main>
-</div>
-
-<footer class="site-footer">
-  <div class="footer-inner">
-    <span>© <span id="year"></span> <strong>Dominik Łabudziński</strong>. Wszystkie prawa zastrzeżone.</span>
-    <div class="footer-links">
-      <a href="https://lubimyczytac.pl/ksiazka/5215154/detektywi-z-wi-fi-tajemnice-cyfrowego-swiata"
-         class="external-link"
-         target="_blank"
-         rel="noopener">
-         Zobacz książkę na Lubimyczytać.pl
-      </a>
-    </div>
-  </div>
-</footer>
-
-<!-- Prosty, czysty JavaScript bez bibliotek -->
-<script>
-  // Ustawienie aktualnego roku w stopce
-  document.getElementById("year").textContent = new Date().getFullYear();
-
-  // Smooth scroll dla linków nawigacji (fallback: domyślne zachowanie)
-  (function attachSmoothScroll() {
-    const links = document.querySelectorAll('a[href^="#"]');
-    links.forEach(function (link) {
-      link.addEventListener("click", function (event) {
-        const targetId = link.getAttribute("href").slice(1);
-        if (!targetId) return;
-        const target = document.getElementById(targetId);
-        if (!target) return;
-        event.preventDefault();
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-    });
-  })();
-
-  // Animacja wjazdu sekcji przy przewijaniu
-  (function revealOnScroll() {
-    const sections = document.querySelectorAll("section.section");
-    if (!("IntersectionObserver" in window)) {
-      sections.forEach(function (s) { s.classList.add("section--visible"); });
-      return;
-    }
-
-    const observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("section--visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.18
-    });
-
-    sections.forEach(function (section) { observer.observe(section); });
-  })();
-</script>
-</body>
+        </footer>
+        
+        <script>
+            // Rok w stopce
+            document.getElementById("year").textContent = new Date().getFullYear();
+            
+            // Smooth scroll
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener("click", e => {
+                    const targetId = link.getAttribute("href").slice(1);
+                    if (!targetId) return;
+                    const target = document.getElementById(targetId);
+                    if (!target) return;
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                });
+            });
+            
+            // Animacja wjazdu sekcji
+            const sections = document.querySelectorAll("section.section");
+            if ("IntersectionObserver" in window) {
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("section--visible");
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+                
+                sections.forEach(section => observer.observe(section));
+            } else {
+                sections.forEach(s => s.classList.add("section--visible"));
+            }
+            
+            // Header scroll effect
+            const header = document.querySelector(".site-header");
+            let lastScroll = 0;
+            
+            window.addEventListener("scroll", () => {
+                const currentScroll = window.pageYOffset;
+                if (currentScroll > 50) {
+                    header.classList.add("scrolled");
+                } else {
+                    header.classList.remove("scrolled");
+                }
+                lastScroll = currentScroll;
+            });
+        </script>
+    </body>
 </html>
-
